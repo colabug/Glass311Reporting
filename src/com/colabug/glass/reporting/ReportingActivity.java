@@ -8,6 +8,12 @@ import com.google.android.glass.app.Card;
 
 import java.util.List;
 
+// TODO: Implement the rest of the flow
+//    * Add menu for the first card
+//    * After selecting a category, prompt for more text
+//    * Show a summary card with category and text
+//    * Share data with the API
+//    * Allow sharing of photos
 public class ReportingActivity extends Activity
 {
     private static final int SPEECH_REQUEST = 0;
@@ -19,14 +25,6 @@ public class ReportingActivity extends Activity
     public void onCreate( Bundle savedInstanceState )
     {
         super.onCreate( savedInstanceState );
-
-        // Create a card with some simple text and a footer.
-        Card card1 = new Card( this );
-        card1.setText( "Sorry we can't parse what you said" );
-        card1.setFootnote( "Please try again." );
-        // Don't call this if you're using TimelineManager
-        setContentView( card1.toView() );
-
         displaySpeechRecognizer();
     }
 
@@ -36,34 +34,47 @@ public class ReportingActivity extends Activity
         startActivityForResult( intent, SPEECH_REQUEST );
     }
 
-
     @Override
     protected void onActivityResult( int requestCode,
                                      int resultCode,
                                      Intent data )
     {
+        super.onActivityResult( requestCode, resultCode, data );
+
         if ( requestCode == SPEECH_REQUEST && resultCode == RESULT_OK )
         {
             List<String> results = data.getStringArrayListExtra(
             RecognizerIntent.EXTRA_RESULTS );
             String spokenText = results.get( 0 );
-            // Do something with spokenText.
-            Card card2;
 
-            if (spokenText.contains("hole")){
-                     card2 = new Card( this );
-                     card2.setText( "You just reported a Pothole" );
-                     card2.setFootnote("you just said \"" + spokenText +"\"");
-                     setContentView( card2.toView() );
-            } else if (spokenText.contains("street light")){
-                     card2 = new Card( this );
-                     card2.setText( "You just reported a broken street light" );
-                     card2.setFootnote("you just said \"" + spokenText +"\"");
-                     setContentView( card2.toView() );
+            // Determine what to do based on the category keyword
+            Card card = new Card( this );
+            // Pothole
+            if ( spokenText.contains( "hole" ) )
+            {
+                card.setText( "You just reported a pothole." );
+                card.setFootnote( "You just said \"" + spokenText + "\"" );
+            }
+            // Street light
+            else if ( spokenText.contains( "street light" ) )
+            {
+                card.setText( "You just reported a broken street light." );
+                card.setFootnote( "You just said \"" + spokenText + "\"" );
+            }
+            // Dangerous building
+            else if ( spokenText.contains( "building" ) )
+            {
+                card.setText( "You just reported a dangerous building." );
+                card.setFootnote( "You just said \"" + spokenText + "\"" );
+            }
+            // Unknown category
+            else
+            {
+                card.setText( "Please use a known category: pothole, dangerous building, or street light." );
+                card.setFootnote( "You just said \"" + spokenText + "\"" );
             }
 
-
+            setContentView( card.toView() );
         }
-        super.onActivityResult( requestCode, resultCode, data );
     }
 }
