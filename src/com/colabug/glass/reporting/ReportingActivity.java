@@ -22,8 +22,8 @@ public class ReportingActivity extends Activity
 
         // Create a card with some simple text and a footer.
         Card card1 = new Card( this );
-        card1.setText( "This card has a footer." );
-        card1.setFootnote( "I'm the footer!" );
+        card1.setText( "Sorry we can't parse what you said" );
+        card1.setFootnote( "Please try again." );
         // Don't call this if you're using TimelineManager
         setContentView( card1.toView() );
 
@@ -36,6 +36,7 @@ public class ReportingActivity extends Activity
         startActivityForResult( intent, SPEECH_REQUEST );
     }
 
+
     @Override
     protected void onActivityResult( int requestCode,
                                      int resultCode,
@@ -47,6 +48,21 @@ public class ReportingActivity extends Activity
             RecognizerIntent.EXTRA_RESULTS );
             String spokenText = results.get( 0 );
             // Do something with spokenText.
+            Card card2;
+
+            if (spokenText.contains("hole")){
+                     card2 = new Card( this );
+                     card2.setText( "You just reported a Pothole" );
+                     card2.setFootnote("you just said \"" + spokenText +"\"");
+                     setContentView( card2.toView() );
+            } else if (spokenText.contains("street light")){
+                     card2 = new Card( this );
+                     card2.setText( "You just reported a broken street light" );
+                     card2.setFootnote("you just said \"" + spokenText +"\"");
+                     setContentView( card2.toView() );
+            }
+
+
         }
         super.onActivityResult( requestCode, resultCode, data );
     }
