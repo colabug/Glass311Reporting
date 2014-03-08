@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.colabug.glass.reporting"
-          android:versionCode="1"
-          android:versionName="1.0">
-    <uses-sdk android:minSdkVersion="15"/><application
-    android:label="@string/app_name"
-    android:icon="@drawable/ic_launcher">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.colabug.glass.reporting"
+    android:versionCode="1"
+    android:versionName="1.0">
+
+    <uses-sdk
+        android:minSdkVersion="15"
+        android:targetSdkVersion="15"/>
+
+    <application
+        android:label="@string/app_name"
+        android:icon="@drawable/ic_launcher"
+        android:theme="@style/CustomTheme">
+
         <activity
             android:name="ReportingActivity"
             android:label="@string/app_name">
